@@ -15,6 +15,35 @@ import {
 
 const chainConfig = getChain()
 
+
+const customChainNodeUrl = process.env.CHAIN_NODE_URL
+const customChainArchiveUrl = process.env.CHAIN_ARCHIVE_URL
+const blockFrom = process.env.BLOCK_START
+const blockTo = process.env.BLOCK_TO
+
+if(customChainNodeUrl){
+    chainConfig.config.dataSource = {...chainConfig.config.dataSource, chain: customChainNodeUrl}
+}
+
+if(customChainArchiveUrl){
+    chainConfig.config.dataSource = {...chainConfig.config.dataSource, archive: customChainArchiveUrl}
+}
+
+if(blockFrom){
+    if(isNaN(parseInt(blockFrom))){
+        throw new Error(`BLOCK_START should be a number`)
+    }
+
+    chainConfig.config.blockRange = {...chainConfig.config.blockRange, from: parseInt(blockFrom)}
+    if(blockTo) {
+        if (isNaN(parseInt(blockFrom))) {
+            throw new Error(`BLOCK_TO should be a number`)
+        }
+
+        chainConfig.config.blockRange = {...chainConfig.config.blockRange, to: parseInt(blockTo)}
+    }
+}
+
 export const processor = new SubstrateBatchProcessor<
     | EventItem_<
           string,
@@ -30,13 +59,8 @@ export const processor = new SubstrateBatchProcessor<
           }
       >
 >()
-    .setDataSource({
-        archive: lookupArchive(chainConfig.config.chainName, {
-            release: 'FireSquid',
-        }),
-        chain: chainConfig.config.dataSource.chain,
-    })
-    .setBlockRange(chainConfig.config.blockRange || {from: 0})
+    .setDataSource(chainConfig.config.dataSource)
+    .setBlockRange(chainConfig.config.blockRange)
     .includeAllBlocks()
     .addEvent('Balances.Endowed', {
         data: {event: {extrinsic: {hash: true, signature: true}, args: true}},
