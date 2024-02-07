@@ -1,4 +1,4 @@
-import {StoreWithCache} from '@belopash/squid-tools'
+import {StoreWithCache} from '@belopash/typeorm-store'
 import {DataHandlerContext} from '@subsquid/substrate-processor'
 import {getChain} from '../chains'
 import {Account} from '../model'

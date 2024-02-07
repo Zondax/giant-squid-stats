@@ -1,4 +1,4 @@
-import {StoreWithCache} from '@belopash/squid-tools'
+import {StoreWithCache} from '@belopash/typeorm-store'
 import {decodeHex} from '@subsquid/substrate-processor'
 import {getChain} from '../chains'
 import {Block, EventItem, ProcessorContext} from '../processor'
@@ -101,7 +101,7 @@ export function getParsedEventsData(ctx: ProcessorContext<StoreWithCache>): Pars
                         switch (typeof address) {
                             case 'string':
                                 return decodeHex(address)
-                            case 'object': 
+                            case 'object':
                                 assert(typeof address.value === 'string', `Unexpected address value: ${address.value}`)
                                 return decodeHex(address.value)
                             default:

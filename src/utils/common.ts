@@ -1,4 +1,4 @@
-import {StoreWithCache} from '@belopash/squid-tools'
+import {StoreWithCache} from '@belopash/typeorm-store'
 import * as ss58 from '@subsquid/ss58'
 import {assertNotNull, decodeHex, SubstrateBlock, toHex} from '@subsquid/substrate-processor'
 import * as sto from '@subsquid/substrate-processor/lib/util/storage'

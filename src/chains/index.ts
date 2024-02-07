@@ -6,26 +6,42 @@ export function getChain(): {
   config: ProcessorConfig;
   api: ChainApi;
 } {
+  let processorConfig: {
+    config: ProcessorConfig;
+    api: ChainApi;
+  }
+
   switch (process.env.CHAIN) {
     case 'hydradx':
-      return require('./hydradx');
+      processorConfig = require('./hydradx');
+      break;
     case 'kusama':
-      return require('./kusama');
+      processorConfig = require('./kusama');
+      break;
     case 'polkadot':
-      return require('./polkadot');
+      processorConfig = require('./polkadot');
+      break;
     case 'acala':
-      return require('./acala');
+      processorConfig = require('./acala');
+      break;
     case 'karura':
-      return require('./karura');
+      processorConfig = require('./karura');
+      break;
     case 'moonriver':
-      return require('./moonriver');
+      processorConfig = require('./moonriver');
+      break;
     case 'moonbeam':
-      return require('./moonbeam');
+      processorConfig = require('./moonbeam');
+      break;
     case 'bifrost':
-      return require('./bifrost');
+      processorConfig = require('./bifrost');
+      break;
     case 'phala':
-      return require('./phala');
+      processorConfig = require('./phala');
+      break;
     default:
       throw new Error(`Unsupported chain ${process.env.CHAIN}`);
   }
+
+  return processorConfig
 }

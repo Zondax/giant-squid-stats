@@ -1,7 +1,7 @@
 import { ProcessorContext } from '../processor'
 import { Current } from '../model'
 import { getChain } from '../chains'
-import {StoreWithCache} from '@belopash/squid-tools'
+import {StoreWithCache} from '@belopash/typeorm-store'
 
 const { api } = getChain()
 

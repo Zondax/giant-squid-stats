@@ -9,13 +9,13 @@
     "db:migrate": "npx squid-typeorm-migration apply",
     "db:reset": ". ./scripts/reset-db.sh",
     "db:soft-reset": ". ./scripts/soft-reset-db.sh",
-    "processor:start": "node lib/processor.js",
+    "processor:start": "node lib/main.js",
     "query-node:start": "squid-graphql-server --subscriptions --max-response-size 10000",
     "watch": "yarn chokidar \"src/**/*\" \"typegen\" -c 'yarn build'",
     "update": "npx npm-check-updates --filter /subsquid/ --upgrade && npm i -f"
   },
   "dependencies": {
-    "@belopash/squid-tools": "^0.2.0",
+    "@belopash/typeorm-store": "^1.1.2",
     "@subsquid/archive-registry": "3.1.0",
     "@subsquid/big-decimal": "^1.0.0",
     "@subsquid/graphql-server": "4.2.0",

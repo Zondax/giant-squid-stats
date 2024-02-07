@@ -1,4 +1,4 @@
-import {StoreWithCache} from '@belopash/squid-tools'
+import {StoreWithCache} from '@belopash/typeorm-store'
 import { BackupCounter } from '../model'
 import { ProcessorContext } from '../processor'
 import { CallSignedExtrinsicData } from '../utils/types'

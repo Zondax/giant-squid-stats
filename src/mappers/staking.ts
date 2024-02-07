@@ -2,7 +2,7 @@ import { ProcessorContext } from '../processor'
 import { getChain } from '../chains'
 import { assertNotNull, toHex } from '@subsquid/substrate-processor'
 import { Current } from '../model'
-import {StoreWithCache} from '@belopash/squid-tools'
+import {StoreWithCache} from '@belopash/typeorm-store'
 const { config: chainConfig, api: apiDecorated } = getChain()
 
 // TODO: Add total issuance here as well
@@ -101,7 +101,7 @@ export async function handleStakeAmount(
       else singleValidatorsStake += validatorsData[i].total
     }
   }
-  
+
   const totalStaked = totalValidatorsStake + totalNominatorsStake
 
   let inflation: number | null = null
@@ -125,7 +125,7 @@ export async function handleStakeAmount(
   }
 
   current.balancesTotalIssuance = assertNotNull(totalIssuance)
- 
+
   current.stakingValidatorsIdealAmount = idealValidators ?? 0
   current.stakingActiveValidatorsAmount = validatorsData.length
   current.stakingValidatorsAmount = totalValidators ?? 0
@@ -228,7 +228,7 @@ function findMinimalStake(stakes: bigint[]) {
 
 /**
  * validators collators
- * 
+ *
   switch (chainConfig.chainName) {
     case 'kusama':
     case 'polkadot': {

@@ -1,4 +1,4 @@
-import {StoreWithCache} from '@belopash/squid-tools'
+import {StoreWithCache} from '@belopash/typeorm-store'
 import {TypeormDatabase} from '@subsquid/typeorm-store'
 import {handleBalances} from './mappers/balances'
 import {getParsedEventsData} from './mappers/common'
@@ -13,7 +13,7 @@ import {ChartsCache, getOrCreateBackupCounter, getOrCreateCurrent, getTimePoints
 import {BalancesTransferEventData, BlockEventName, CallSignedExtrinsicData, InvolvedAccountsData} from './utils/types'
 
 processor.run(new TypeormDatabase(), async (_ctx) => {
-    const store = StoreWithCache.create(_ctx.store)
+    const store = new StoreWithCache( () => (_ctx.store as any).em())
 
     const ctx = {..._ctx, store}
 
