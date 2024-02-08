@@ -39,6 +39,9 @@ export function getChain(): {
     case 'phala':
       processorConfig = require('./phala');
       break;
+    case 'paseo':
+      processorConfig = require('./paseo');
+      break;
     default:
       throw new Error(`Unsupported chain ${process.env.CHAIN}`);
   }
