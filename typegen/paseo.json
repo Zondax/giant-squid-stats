@@ -1,0 +1,7 @@
+{
+  "outDir": "../src/chains/paseo/types",
+  "specVersions": "https://firesquid-pas-gateway.zondax.ch/graphql",
+  "events": true,
+  "storage": true,
+  "calls": []
+}
