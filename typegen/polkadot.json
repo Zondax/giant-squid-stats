@@ -1,6 +1,6 @@
 {
   "outDir": "../src/chains/polkadot/types",
-  "specVersions": "https://polkadot.archive.subsquid.io/graphql",
+  "specVersions": "https://firesquid-dot-gateway.zondax.ch/graphql",
   "events": true,
   "storage": true,
   "calls": []

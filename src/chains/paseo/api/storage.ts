@@ -32,8 +32,8 @@ export async function getLeasesTotalAmount(ctx: ChainContext, block: Block) {
   const storage = new SlotsLeasesStorage(ctx, block)
   if (!storage.isExists) return undefined
 
-  if (storage.isV9110) {
-    const slots = await storage.asV9110.getAll()
+  if (storage.isV1001002) {
+    const slots = await storage.asV1001002.getAll()
     let sum = 0n
     for (const slot of slots) {
       const amount = slot.at(0)?.at(1)
@@ -54,8 +54,8 @@ export async function getIdentitySupers(
   const storage = new IdentitySuperOfStorage(ctx, block)
   if (!storage.isExists) return undefined
 
-  if (storage.isV5) {
-    const supersData = await storage.asV5.getMany(keys)
+  if (storage.isV1001002) {
+    const supersData = await storage.asV1001002.getMany(keys)
     return supersData.map((superData) => {
       if (superData === undefined) return superData
       else return superData[0]
@@ -69,8 +69,8 @@ export async function getTotalIssuance(ctx: ChainContext, block: Block) {
   const storage = new BalancesTotalIssuanceStorage(ctx, block)
   if (!storage.isExists) return undefined
 
-  if (storage.isV0) {
-    return await storage.asV0.get()
+  if (storage.isV1001002) {
+    return await storage.asV1001002.get()
   }
 
   throw new UnknownVersionError(storage.constructor.name)
@@ -79,8 +79,8 @@ export async function getActiveEra(ctx: ChainContext, block: Block) {
   const storage = new StakingActiveEraStorage(ctx, block)
   if (!storage.isExists) return undefined
 
-  if (storage.isV0) {
-    return await storage.asV0.get()
+  if (storage.isV1001002) {
+    return await storage.asV1001002.get()
   }
 
   throw new UnknownVersionError(storage.constructor.name)
@@ -89,8 +89,8 @@ export async function getCurrentEra(ctx: ChainContext, block: Block) {
   const storage = new StakingCurrentEraStorage(ctx, block)
   if (!storage.isExists) return undefined
 
-  if (storage.isV0) {
-    return await storage.asV0.get()
+  if (storage.isV1001002) {
+    return await storage.asV1001002.get()
   }
 
   throw new UnknownVersionError(storage.constructor.name)
@@ -100,8 +100,8 @@ export async function getValidators(ctx: ChainContext, block: Block) {
   const storage = new SessionValidatorsStorage(ctx, block)
   if (!storage.isExists) return undefined
 
-  if (storage.isV0) {
-    return await storage.asV0.get()
+  if (storage.isV1001002) {
+    return await storage.asV1001002.get()
   }
 
   throw new UnknownVersionError(storage.constructor.name)
@@ -117,8 +117,8 @@ export async function getIdealValidatorsCount(ctx: ChainContext, block: Block) {
   const storage = new StakingValidatorCountStorage(ctx, block)
   if (!storage.isExists) return undefined
 
-  if (storage.isV0) {
-    return await storage.asV0.get()
+  if (storage.isV1001002) {
+    return await storage.asV1001002.get()
   }
 
   throw new UnknownVersionError(storage.constructor.name)
@@ -128,11 +128,11 @@ export async function getNominationPoolsData(ctx: ChainContext, block: Block) {
   const storage = new NominationPoolsBondedPoolsStorage(ctx, block)
   if (!storage.isExists) return undefined
 
-  if (storage.isV9280) {
-    return await storage.asV9280.getAll()
+  if (storage.isV1001002) {
+    return await storage.asV1001002.getAll()
   }
-  if (storage.isV9420) {
-    return await storage.asV9420.getAll()
+  if (storage.isV1002000) {
+    return await storage.asV1002000.getAll()
   } else {
     throw new UnknownVersionError(storage.constructor.name)
   }
@@ -144,8 +144,8 @@ export async function getCounterForValidatorsNumber(
 ) {
   const storage = new StakingCounterForValidatorsStorage(ctx, block)
   if (!storage.isExists) return undefined
-  if (storage.isV9050) {
-    return await storage.asV9050.get()
+  if (storage.isV1001002) {
+    return await storage.asV1001002.get()
   } else {
     throw new UnknownVersionError(storage.constructor.name)
   }
@@ -157,8 +157,8 @@ export async function getCounterForNominatorsNumber(
 ) {
   const storage = new StakingCounterForNominatorsStorage(ctx, block)
   if (!storage.isExists) return undefined
-  if (storage.isV9050) {
-    return await storage.asV9050.get()
+  if (storage.isV1001002) {
+    return await storage.asV1001002.get()
   } else {
     throw new UnknownVersionError(storage.constructor.name)
   }
@@ -167,8 +167,8 @@ export async function getCounterForNominatorsNumber(
 export async function getAuctionCounterNumber(ctx: ChainContext, block: Block) {
   const storage = new AuctionsAuctionCounterStorage(ctx, block)
   if (!storage.isExists) return undefined
-  if (storage.isV9110) {
-    return await storage.asV9110.get()
+  if (storage.isV1001002) {
+    return await storage.asV1001002.get()
   } else {
     throw new UnknownVersionError(storage.constructor.name)
   }
@@ -197,67 +197,23 @@ export async function getHoldersTotals(ctx: ChainContext, block: Block) {
   if (!storageSysAccount.isExists) return undefined
 
   const accountsList: AccountBalancesPair[] = []
-  if (storageSysAccount.isV0) {
-    for await (const keysPack of storageSysAccount.asV0.getPairsPaged(1000))
+  if (storageSysAccount.isV1001002) {
+    for await (const keysPack of storageSysAccount.asV1001002.getPairsPaged(1000))
       keysPack.forEach((pair) =>
         accountsList.push([
           pair[0],
           {
             free: pair[1].data.free,
             reserved: pair[1].data.reserved,
-            miscFrozen: pair[1].data.miscFrozen,
-            feeFrozen: pair[1].data.feeFrozen
-          }
-        ])
-      )
-
-    return handleHoldersTotals(accountsList)
-  } else if (storageSysAccount.asV25) {
-    for await (const keysPack of storageSysAccount.asV25.getPairsPaged(1000))
-      keysPack.forEach((pair) =>
-        accountsList.push([
-          pair[0],
-          {
-            free: pair[1].data.free,
-            reserved: pair[1].data.reserved,
-            miscFrozen: pair[1].data.miscFrozen,
-            feeFrozen: pair[1].data.feeFrozen
-          }
-        ])
-      )
-
-    return handleHoldersTotals(accountsList)
-  } else if (storageSysAccount.isV28) {
-    for await (const keysPack of storageSysAccount.asV28.getPairsPaged(1000))
-      keysPack.forEach((pair) =>
-        accountsList.push([
-          pair[0],
-          {
-            free: pair[1].data.free,
-            reserved: pair[1].data.reserved,
-            miscFrozen: pair[1].data.miscFrozen,
-            feeFrozen: pair[1].data.feeFrozen
-          }
-        ])
-      )
-
-    return handleHoldersTotals(accountsList)
-  } else if (storageSysAccount.isV30) {
-    for await (const keysPack of storageSysAccount.asV30.getPairsPaged(1000))
-      keysPack.forEach((pair) =>
-        accountsList.push([
-          pair[0],
-          {
-            free: pair[1].data.free,
-            reserved: pair[1].data.reserved,
-            miscFrozen: pair[1].data.miscFrozen,
-            feeFrozen: pair[1].data.feeFrozen
+            miscFrozen: BigInt(0),
+            feeFrozen: pair[1].data.frozen
           }
         ])
       )
 
     return handleHoldersTotals(accountsList)
   }
+
   throw new UnknownVersionError(storageSysAccount.constructor.name)
 }
 
@@ -269,8 +225,8 @@ export async function getEraStakersData(
   const storage = new StakingErasStakersStorage(ctx, block)
   if (!storage.isExists) return undefined
 
-  if (storage.isV0) {
-    const pairs = await storage.asV0.getPairs(era)
+  if (storage.isV1001002) {
+    const pairs = await storage.asV1001002.getPairs(era)
     const eraStakers: EraStaker[] = pairs.map((pair) => {
       const [[era, validator], stats] = pair
       const eraStaker: EraStaker = {
