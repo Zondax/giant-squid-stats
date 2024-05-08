@@ -133,7 +133,12 @@ export async function getNominationPoolsData(ctx: ChainContext, block: Block) {
   }
   if (storage.isV9420) {
     return await storage.asV9420.getAll()
-  } else {
+  }
+  if(storage.isV1002000){
+    return await storage.asV1002000.getAll()
+  }
+
+  else {
     throw new UnknownVersionError(storage.constructor.name)
   }
 }
