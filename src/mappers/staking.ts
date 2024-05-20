@@ -66,7 +66,7 @@ export async function handleStakeAmount(
     block,
     eraData
   )
-  if (!validatorsData) {
+  if (!validatorsData || !validatorsData.length) {
     return ctx.log.warn(`Missing info for validators in era ${currentEraData}`)
   }
 
