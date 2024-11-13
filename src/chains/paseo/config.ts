@@ -9,7 +9,7 @@ export const config: ProcessorConfig = {
   // 1st Jan 2023
   // blockRange: {from: 12726940},
   chainName: 'paseo',
-  prefix: 42,
+  prefix: 0,
   dataSource: {
     archive: '',
     chain: ''
