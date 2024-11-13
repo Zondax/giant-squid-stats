@@ -49,6 +49,9 @@ import * as v1000001 from './v1000001'
 import * as v1001002 from './v1001002'
 import * as v1001003 from './v1001003'
 import * as v1002000 from './v1002000'
+import * as v1002006 from './v1002006'
+import * as v1003000 from './v1003000'
+import * as v1003003 from './v1003003'
 
 export class AssetRateConversionRateToNativeStorage extends StorageBase {
     protected getPrefix() {
@@ -3062,6 +3065,21 @@ export class ConfigurationActiveConfigStorage extends StorageBase {
         assert(this.isV1002000)
         return this as any
     }
+
+    /**
+     *  The active configuration for the current session.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '034e237d418d67fc7ceeeb491c7a6b1fadf0426acb0cfd1e6b869021d04645be'
+    }
+
+    /**
+     *  The active configuration for the current session.
+     */
+    get asV1003000(): ConfigurationActiveConfigStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
 }
 
 /**
@@ -3125,6 +3143,13 @@ export interface ConfigurationActiveConfigStorageV1000001 {
  */
 export interface ConfigurationActiveConfigStorageV1002000 {
     get(): Promise<v1002000.HostConfiguration>
+}
+
+/**
+ *  The active configuration for the current session.
+ */
+export interface ConfigurationActiveConfigStorageV1003000 {
+    get(): Promise<v1003000.HostConfiguration>
 }
 
 export class ConfigurationBypassConsistencyCheckStorage extends StorageBase {
@@ -3428,6 +3453,33 @@ export class ConfigurationPendingConfigsStorage extends StorageBase {
         assert(this.isV1002000)
         return this as any
     }
+
+    /**
+     *  Pending configuration changes.
+     * 
+     *  This is a list of configuration changes, each with a session index at which it should
+     *  be applied.
+     * 
+     *  The list is sorted ascending by session index. Also, this list can only contain at most
+     *  2 items: for the next session and for the `scheduled_session`.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '496ce0324e442a1e7a480d94130849cc93d54f069ae79a67d5e467a14cdaef04'
+    }
+
+    /**
+     *  Pending configuration changes.
+     * 
+     *  This is a list of configuration changes, each with a session index at which it should
+     *  be applied.
+     * 
+     *  The list is sorted ascending by session index. Also, this list can only contain at most
+     *  2 items: for the next session and for the `scheduled_session`.
+     */
+    get asV1003000(): ConfigurationPendingConfigsStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
 }
 
 /**
@@ -3534,6 +3586,19 @@ export interface ConfigurationPendingConfigsStorageV1002000 {
     get(): Promise<[number, v1002000.HostConfiguration][]>
 }
 
+/**
+ *  Pending configuration changes.
+ * 
+ *  This is a list of configuration changes, each with a session index at which it should
+ *  be applied.
+ * 
+ *  The list is sorted ascending by session index. Also, this list can only contain at most
+ *  2 items: for the next session and for the `scheduled_session`.
+ */
+export interface ConfigurationPendingConfigsStorageV1003000 {
+    get(): Promise<[number, v1003000.HostConfiguration][]>
+}
+
 export class ConvictionVotingClassLocksForStorage extends StorageBase {
     protected getPrefix() {
         return 'ConvictionVoting'
@@ -3629,6 +3694,92 @@ export interface ConvictionVotingVotingForStorageV9420 {
     getPairsPaged(pageSize: number): AsyncIterable<[k: [Uint8Array, number], v: v9420.Type_605][]>
     getPairsPaged(pageSize: number, key1: Uint8Array): AsyncIterable<[k: [Uint8Array, number], v: v9420.Type_605][]>
     getPairsPaged(pageSize: number, key1: Uint8Array, key2: number): AsyncIterable<[k: [Uint8Array, number], v: v9420.Type_605][]>
+}
+
+export class CoretimeAssignmentProviderCoreDescriptorsStorage extends StorageBase {
+    protected getPrefix() {
+        return 'CoretimeAssignmentProvider'
+    }
+
+    protected getName() {
+        return 'CoreDescriptors'
+    }
+
+    /**
+     *  Assignments which are currently active.
+     * 
+     *  They will be picked from `PendingAssignments` once we reach the scheduled block number in
+     *  `PendingAssignments`.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '784255ce897f29d1247d3dbfca78d62ec4b3f90674dc471f1a7d924924057ce3'
+    }
+
+    /**
+     *  Assignments which are currently active.
+     * 
+     *  They will be picked from `PendingAssignments` once we reach the scheduled block number in
+     *  `PendingAssignments`.
+     */
+    get asV1003000(): CoretimeAssignmentProviderCoreDescriptorsStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Assignments which are currently active.
+ * 
+ *  They will be picked from `PendingAssignments` once we reach the scheduled block number in
+ *  `PendingAssignments`.
+ */
+export interface CoretimeAssignmentProviderCoreDescriptorsStorageV1003000 {
+    get(key: number): Promise<v1003000.CoreDescriptor>
+    getAll(): Promise<v1003000.CoreDescriptor[]>
+    getMany(keys: number[]): Promise<v1003000.CoreDescriptor[]>
+}
+
+export class CoretimeAssignmentProviderCoreSchedulesStorage extends StorageBase {
+    protected getPrefix() {
+        return 'CoretimeAssignmentProvider'
+    }
+
+    protected getName() {
+        return 'CoreSchedules'
+    }
+
+    /**
+     *  Scheduled assignment sets.
+     * 
+     *  Assignments as of the given block number. They will go into state once the block number is
+     *  reached (and replace whatever was in there before).
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '8a2b2385fd3dce82622eb08cde53b3b3fe267db9d0a533f86b579e722af4d486'
+    }
+
+    /**
+     *  Scheduled assignment sets.
+     * 
+     *  Assignments as of the given block number. They will go into state once the block number is
+     *  reached (and replace whatever was in there before).
+     */
+    get asV1003000(): CoretimeAssignmentProviderCoreSchedulesStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Scheduled assignment sets.
+ * 
+ *  Assignments as of the given block number. They will go into state once the block number is
+ *  reached (and replace whatever was in there before).
+ */
+export interface CoretimeAssignmentProviderCoreSchedulesStorageV1003000 {
+    get(key: [number, number]): Promise<(v1003000.Schedule | undefined)>
+    getAll(): Promise<v1003000.Schedule[]>
+    getMany(keys: [number, number][]): Promise<(v1003000.Schedule | undefined)[]>
 }
 
 export class CouncilMembersStorage extends StorageBase {
@@ -11955,6 +12106,192 @@ export interface OffencesReportsByKindIndexStorageV0 {
     getPairsPaged(pageSize: number, key: Uint8Array): AsyncIterable<[k: Uint8Array, v: Uint8Array][]>
 }
 
+export class OnDemandAffinityEntriesStorage extends StorageBase {
+    protected getPrefix() {
+        return 'OnDemand'
+    }
+
+    protected getName() {
+        return 'AffinityEntries'
+    }
+
+    /**
+     *  Queue entries that are currently bound to a particular core due to core affinity.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '4202e1f0d9f946cdfd02fb7a3be23c29f6b3eec6856064665a044f5e80eba8f2'
+    }
+
+    /**
+     *  Queue entries that are currently bound to a particular core due to core affinity.
+     */
+    get asV1003000(): OnDemandAffinityEntriesStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Queue entries that are currently bound to a particular core due to core affinity.
+ */
+export interface OnDemandAffinityEntriesStorageV1003000 {
+    get(key: number): Promise<v1003000.EnqueuedOrder[]>
+    getAll(): Promise<v1003000.EnqueuedOrder[][]>
+    getMany(keys: number[]): Promise<v1003000.EnqueuedOrder[][]>
+    getKeys(): Promise<number[]>
+    getKeys(key: number): Promise<number[]>
+    getKeysPaged(pageSize: number): AsyncIterable<number[]>
+    getKeysPaged(pageSize: number, key: number): AsyncIterable<number[]>
+    getPairs(): Promise<[k: number, v: v1003000.EnqueuedOrder[]][]>
+    getPairs(key: number): Promise<[k: number, v: v1003000.EnqueuedOrder[]][]>
+    getPairsPaged(pageSize: number): AsyncIterable<[k: number, v: v1003000.EnqueuedOrder[]][]>
+    getPairsPaged(pageSize: number, key: number): AsyncIterable<[k: number, v: v1003000.EnqueuedOrder[]][]>
+}
+
+export class OnDemandFreeEntriesStorage extends StorageBase {
+    protected getPrefix() {
+        return 'OnDemand'
+    }
+
+    protected getName() {
+        return 'FreeEntries'
+    }
+
+    /**
+     *  Priority queue for all orders which don't yet (or not any more) have any core affinity.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === 'd6f5201baa748fa140f3ada2bd684a1aa4ec4f6f90e68ba21560e342201aee12'
+    }
+
+    /**
+     *  Priority queue for all orders which don't yet (or not any more) have any core affinity.
+     */
+    get asV1003000(): OnDemandFreeEntriesStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Priority queue for all orders which don't yet (or not any more) have any core affinity.
+ */
+export interface OnDemandFreeEntriesStorageV1003000 {
+    get(): Promise<v1003000.EnqueuedOrder[]>
+}
+
+export class OnDemandParaIdAffinityStorage extends StorageBase {
+    protected getPrefix() {
+        return 'OnDemand'
+    }
+
+    protected getName() {
+        return 'ParaIdAffinity'
+    }
+
+    /**
+     *  Maps a `ParaId` to `CoreIndex` and keeps track of how many assignments the scheduler has in
+     *  it's lookahead. Keeping track of this affinity prevents parallel execution of the same
+     *  `ParaId` on two or more `CoreIndex`es.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === 'fa778764c06d91046f0c592dfacd6130a421080bb104433375e7d5bffc900a39'
+    }
+
+    /**
+     *  Maps a `ParaId` to `CoreIndex` and keeps track of how many assignments the scheduler has in
+     *  it's lookahead. Keeping track of this affinity prevents parallel execution of the same
+     *  `ParaId` on two or more `CoreIndex`es.
+     */
+    get asV1003000(): OnDemandParaIdAffinityStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Maps a `ParaId` to `CoreIndex` and keeps track of how many assignments the scheduler has in
+ *  it's lookahead. Keeping track of this affinity prevents parallel execution of the same
+ *  `ParaId` on two or more `CoreIndex`es.
+ */
+export interface OnDemandParaIdAffinityStorageV1003000 {
+    get(key: number): Promise<(v1003000.CoreAffinityCount | undefined)>
+    getAll(): Promise<v1003000.CoreAffinityCount[]>
+    getMany(keys: number[]): Promise<(v1003000.CoreAffinityCount | undefined)[]>
+    getKeys(): Promise<number[]>
+    getKeys(key: number): Promise<number[]>
+    getKeysPaged(pageSize: number): AsyncIterable<number[]>
+    getKeysPaged(pageSize: number, key: number): AsyncIterable<number[]>
+    getPairs(): Promise<[k: number, v: v1003000.CoreAffinityCount][]>
+    getPairs(key: number): Promise<[k: number, v: v1003000.CoreAffinityCount][]>
+    getPairsPaged(pageSize: number): AsyncIterable<[k: number, v: v1003000.CoreAffinityCount][]>
+    getPairsPaged(pageSize: number, key: number): AsyncIterable<[k: number, v: v1003000.CoreAffinityCount][]>
+}
+
+export class OnDemandQueueStatusStorage extends StorageBase {
+    protected getPrefix() {
+        return 'OnDemand'
+    }
+
+    protected getName() {
+        return 'QueueStatus'
+    }
+
+    /**
+     *  Overall status of queue (both free + affinity entries)
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === 'a6807cfaf05820580cac49ff7f9d7ebd43216b3a5210c9de1647274b4e247269'
+    }
+
+    /**
+     *  Overall status of queue (both free + affinity entries)
+     */
+    get asV1003000(): OnDemandQueueStatusStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Overall status of queue (both free + affinity entries)
+ */
+export interface OnDemandQueueStatusStorageV1003000 {
+    get(): Promise<v1003000.QueueStatusType>
+}
+
+export class OnDemandRevenueStorage extends StorageBase {
+    protected getPrefix() {
+        return 'OnDemand'
+    }
+
+    protected getName() {
+        return 'Revenue'
+    }
+
+    /**
+     *  Keeps track of accumulated revenue from on demand order sales.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === 'ba06ab84d5ef154d036f4d65808c92eca2b50836d5fc1e3d051feb917279e33b'
+    }
+
+    /**
+     *  Keeps track of accumulated revenue from on demand order sales.
+     */
+    get asV1003000(): OnDemandRevenueStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Keeps track of accumulated revenue from on demand order sales.
+ */
+export interface OnDemandRevenueStorageV1003000 {
+    get(): Promise<bigint[]>
+}
+
 export class ParaInclusionAvailabilityBitfieldsStorage extends StorageBase {
     protected getPrefix() {
         return 'ParaInclusion'
@@ -12079,6 +12416,60 @@ export interface ParaInclusionPendingAvailabilityCommitmentsStorageV9110 {
     getPairs(key: number): Promise<[k: number, v: v9110.V1CandidateCommitments][]>
     getPairsPaged(pageSize: number): AsyncIterable<[k: number, v: v9110.V1CandidateCommitments][]>
     getPairsPaged(pageSize: number, key: number): AsyncIterable<[k: number, v: v9110.V1CandidateCommitments][]>
+}
+
+export class ParaInclusionV1Storage extends StorageBase {
+    protected getPrefix() {
+        return 'ParaInclusion'
+    }
+
+    protected getName() {
+        return 'V1'
+    }
+
+    /**
+     *  Candidates pending availability by `ParaId`. They form a chain starting from the latest
+     *  included head of the para.
+     *  Use a different prefix post-migration to v1, since the v0 `PendingAvailability` storage
+     *  would otherwise have the exact same prefix which could cause undefined behaviour when doing
+     *  the migration.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '4324cacddacf624a79c856bc389bddecd4da94b1d18aeb913c070b9e54e1eff6'
+    }
+
+    /**
+     *  Candidates pending availability by `ParaId`. They form a chain starting from the latest
+     *  included head of the para.
+     *  Use a different prefix post-migration to v1, since the v0 `PendingAvailability` storage
+     *  would otherwise have the exact same prefix which could cause undefined behaviour when doing
+     *  the migration.
+     */
+    get asV1003000(): ParaInclusionV1StorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Candidates pending availability by `ParaId`. They form a chain starting from the latest
+ *  included head of the para.
+ *  Use a different prefix post-migration to v1, since the v0 `PendingAvailability` storage
+ *  would otherwise have the exact same prefix which could cause undefined behaviour when doing
+ *  the migration.
+ */
+export interface ParaInclusionV1StorageV1003000 {
+    get(key: number): Promise<(v1003000.CandidatePendingAvailability[] | undefined)>
+    getAll(): Promise<v1003000.CandidatePendingAvailability[][]>
+    getMany(keys: number[]): Promise<(v1003000.CandidatePendingAvailability[] | undefined)[]>
+    getKeys(): Promise<number[]>
+    getKeys(key: number): Promise<number[]>
+    getKeysPaged(pageSize: number): AsyncIterable<number[]>
+    getKeysPaged(pageSize: number, key: number): AsyncIterable<number[]>
+    getPairs(): Promise<[k: number, v: v1003000.CandidatePendingAvailability[]][]>
+    getPairs(key: number): Promise<[k: number, v: v1003000.CandidatePendingAvailability[]][]>
+    getPairsPaged(pageSize: number): AsyncIterable<[k: number, v: v1003000.CandidatePendingAvailability[]][]>
+    getPairsPaged(pageSize: number, key: number): AsyncIterable<[k: number, v: v1003000.CandidatePendingAvailability[]][]>
 }
 
 export class ParaInherentIncludedStorage extends StorageBase {
@@ -13409,6 +13800,48 @@ export interface ParachainsRelayDispatchQueueSizeStorageV0 {
     getPairsPaged(pageSize: number, key: number): AsyncIterable<[k: number, v: [number, number]][]>
 }
 
+export class ParametersParametersStorage extends StorageBase {
+    protected getPrefix() {
+        return 'Parameters'
+    }
+
+    protected getName() {
+        return 'Parameters'
+    }
+
+    /**
+     *  Stored parameters.
+     */
+    get isV1003003(): boolean {
+        return this.getTypeHash() === '4bb377ccb587c33da44c5f42a2030a04178ac9d10a3c13a2d37fa76da4d570d5'
+    }
+
+    /**
+     *  Stored parameters.
+     */
+    get asV1003003(): ParametersParametersStorageV1003003 {
+        assert(this.isV1003003)
+        return this as any
+    }
+}
+
+/**
+ *  Stored parameters.
+ */
+export interface ParametersParametersStorageV1003003 {
+    get(key: v1003003.RuntimeParametersKey): Promise<(v1003003.RuntimeParametersValue | undefined)>
+    getAll(): Promise<v1003003.RuntimeParametersValue[]>
+    getMany(keys: v1003003.RuntimeParametersKey[]): Promise<(v1003003.RuntimeParametersValue | undefined)[]>
+    getKeys(): Promise<v1003003.RuntimeParametersKey[]>
+    getKeys(key: v1003003.RuntimeParametersKey): Promise<v1003003.RuntimeParametersKey[]>
+    getKeysPaged(pageSize: number): AsyncIterable<v1003003.RuntimeParametersKey[]>
+    getKeysPaged(pageSize: number, key: v1003003.RuntimeParametersKey): AsyncIterable<v1003003.RuntimeParametersKey[]>
+    getPairs(): Promise<[k: v1003003.RuntimeParametersKey, v: v1003003.RuntimeParametersValue][]>
+    getPairs(key: v1003003.RuntimeParametersKey): Promise<[k: v1003003.RuntimeParametersKey, v: v1003003.RuntimeParametersValue][]>
+    getPairsPaged(pageSize: number): AsyncIterable<[k: v1003003.RuntimeParametersKey, v: v1003003.RuntimeParametersValue][]>
+    getPairsPaged(pageSize: number, key: v1003003.RuntimeParametersKey): AsyncIterable<[k: v1003003.RuntimeParametersKey, v: v1003003.RuntimeParametersValue][]>
+}
+
 export class ParasActionsQueueStorage extends StorageBase {
     protected getPrefix() {
         return 'Paras'
@@ -13686,6 +14119,59 @@ export interface ParasFutureCodeUpgradesStorageV9110 {
     getPairs(key: number): Promise<[k: number, v: number][]>
     getPairsPaged(pageSize: number): AsyncIterable<[k: number, v: number][]>
     getPairsPaged(pageSize: number, key: number): AsyncIterable<[k: number, v: number][]>
+}
+
+export class ParasFutureCodeUpgradesAtStorage extends StorageBase {
+    protected getPrefix() {
+        return 'Paras'
+    }
+
+    protected getName() {
+        return 'FutureCodeUpgradesAt'
+    }
+
+    /**
+     *  The list of upcoming future code upgrades.
+     * 
+     *  Each item is a pair of the parachain and the expected block at which the upgrade should be
+     *  applied. The upgrade will be applied at the given relay chain block. In contrast to
+     *  [`FutureCodeUpgrades`] this code upgrade will be applied regardless the parachain making any
+     *  progress or not.
+     * 
+     *  Ordered ascending by block number.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === 'b780f37018db8d8815c6dfde98846c55b5b1d988a7cd0aa1531c92701eab1e95'
+    }
+
+    /**
+     *  The list of upcoming future code upgrades.
+     * 
+     *  Each item is a pair of the parachain and the expected block at which the upgrade should be
+     *  applied. The upgrade will be applied at the given relay chain block. In contrast to
+     *  [`FutureCodeUpgrades`] this code upgrade will be applied regardless the parachain making any
+     *  progress or not.
+     * 
+     *  Ordered ascending by block number.
+     */
+    get asV1003000(): ParasFutureCodeUpgradesAtStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  The list of upcoming future code upgrades.
+ * 
+ *  Each item is a pair of the parachain and the expected block at which the upgrade should be
+ *  applied. The upgrade will be applied at the given relay chain block. In contrast to
+ *  [`FutureCodeUpgrades`] this code upgrade will be applied regardless the parachain making any
+ *  progress or not.
+ * 
+ *  Ordered ascending by block number.
+ */
+export interface ParasFutureCodeUpgradesAtStorageV1003000 {
+    get(): Promise<[number, number][]>
 }
 
 export class ParasHeadsStorage extends StorageBase {
@@ -14095,6 +14581,27 @@ export class ParasPvfActiveVoteMapStorage extends StorageBase {
         assert(this.isV1001002)
         return this as any
     }
+
+    /**
+     *  All currently active PVF pre-checking votes.
+     * 
+     *  Invariant:
+     *  - There are no PVF pre-checking votes that exists in list but not in the set and vice versa.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '0c2d9c873611dd8a3ce310576ecba0b37f96d24237e2ef2ef358a44b56aa6b30'
+    }
+
+    /**
+     *  All currently active PVF pre-checking votes.
+     * 
+     *  Invariant:
+     *  - There are no PVF pre-checking votes that exists in list but not in the set and vice versa.
+     */
+    get asV1003000(): ParasPvfActiveVoteMapStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
 }
 
 /**
@@ -14155,6 +14662,26 @@ export interface ParasPvfActiveVoteMapStorageV1001002 {
     getPairs(key: Uint8Array): Promise<[k: Uint8Array, v: v1001002.PvfCheckActiveVoteState][]>
     getPairsPaged(pageSize: number): AsyncIterable<[k: Uint8Array, v: v1001002.PvfCheckActiveVoteState][]>
     getPairsPaged(pageSize: number, key: Uint8Array): AsyncIterable<[k: Uint8Array, v: v1001002.PvfCheckActiveVoteState][]>
+}
+
+/**
+ *  All currently active PVF pre-checking votes.
+ * 
+ *  Invariant:
+ *  - There are no PVF pre-checking votes that exists in list but not in the set and vice versa.
+ */
+export interface ParasPvfActiveVoteMapStorageV1003000 {
+    get(key: Uint8Array): Promise<(v1003000.PvfCheckActiveVoteState | undefined)>
+    getAll(): Promise<v1003000.PvfCheckActiveVoteState[]>
+    getMany(keys: Uint8Array[]): Promise<(v1003000.PvfCheckActiveVoteState | undefined)[]>
+    getKeys(): Promise<Uint8Array[]>
+    getKeys(key: Uint8Array): Promise<Uint8Array[]>
+    getKeysPaged(pageSize: number): AsyncIterable<Uint8Array[]>
+    getKeysPaged(pageSize: number, key: Uint8Array): AsyncIterable<Uint8Array[]>
+    getPairs(): Promise<[k: Uint8Array, v: v1003000.PvfCheckActiveVoteState][]>
+    getPairs(key: Uint8Array): Promise<[k: Uint8Array, v: v1003000.PvfCheckActiveVoteState][]>
+    getPairsPaged(pageSize: number): AsyncIterable<[k: Uint8Array, v: v1003000.PvfCheckActiveVoteState][]>
+    getPairsPaged(pageSize: number, key: Uint8Array): AsyncIterable<[k: Uint8Array, v: v1003000.PvfCheckActiveVoteState][]>
 }
 
 export class ParasUpcomingParasGenesisStorage extends StorageBase {
@@ -15633,6 +16160,23 @@ export class ProxyProxiesStorage extends StorageBase {
         assert(this.isV9420)
         return this as any
     }
+
+    /**
+     *  The set of account proxies. Maps the account which has delegated to the accounts
+     *  which are being delegated to, together with the amount held on deposit.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === 'c042d65a31a6c1bb643aae907230e621a285e27bc973abdaaecbf4d5a4c4c002'
+    }
+
+    /**
+     *  The set of account proxies. Maps the account which has delegated to the accounts
+     *  which are being delegated to, together with the amount held on deposit.
+     */
+    get asV1003000(): ProxyProxiesStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
 }
 
 /**
@@ -15705,6 +16249,24 @@ export interface ProxyProxiesStorageV9420 {
     getPairs(key: Uint8Array): Promise<[k: Uint8Array, v: [v9420.ProxyDefinition[], bigint]][]>
     getPairsPaged(pageSize: number): AsyncIterable<[k: Uint8Array, v: [v9420.ProxyDefinition[], bigint]][]>
     getPairsPaged(pageSize: number, key: Uint8Array): AsyncIterable<[k: Uint8Array, v: [v9420.ProxyDefinition[], bigint]][]>
+}
+
+/**
+ *  The set of account proxies. Maps the account which has delegated to the accounts
+ *  which are being delegated to, together with the amount held on deposit.
+ */
+export interface ProxyProxiesStorageV1003000 {
+    get(key: Uint8Array): Promise<[v1003000.ProxyDefinition[], bigint]>
+    getAll(): Promise<[v1003000.ProxyDefinition[], bigint][]>
+    getMany(keys: Uint8Array[]): Promise<[v1003000.ProxyDefinition[], bigint][]>
+    getKeys(): Promise<Uint8Array[]>
+    getKeys(key: Uint8Array): Promise<Uint8Array[]>
+    getKeysPaged(pageSize: number): AsyncIterable<Uint8Array[]>
+    getKeysPaged(pageSize: number, key: Uint8Array): AsyncIterable<Uint8Array[]>
+    getPairs(): Promise<[k: Uint8Array, v: [v1003000.ProxyDefinition[], bigint]][]>
+    getPairs(key: Uint8Array): Promise<[k: Uint8Array, v: [v1003000.ProxyDefinition[], bigint]][]>
+    getPairsPaged(pageSize: number): AsyncIterable<[k: Uint8Array, v: [v1003000.ProxyDefinition[], bigint]][]>
+    getPairsPaged(pageSize: number, key: Uint8Array): AsyncIterable<[k: Uint8Array, v: [v1003000.ProxyDefinition[], bigint]][]>
 }
 
 export class PurchaseAccountsStorage extends StorageBase {
@@ -17934,6 +18496,48 @@ export interface SchedulerLookupStorageV9340 {
     getPairsPaged(pageSize: number, key: Uint8Array): AsyncIterable<[k: Uint8Array, v: [number, number]][]>
 }
 
+export class SchedulerRetriesStorage extends StorageBase {
+    protected getPrefix() {
+        return 'Scheduler'
+    }
+
+    protected getName() {
+        return 'Retries'
+    }
+
+    /**
+     *  Retry configurations for items to be executed, indexed by task address.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '82ca922b0e7f4863ae09896c506f0ff9920d8cd0f180901b65138006d46cf479'
+    }
+
+    /**
+     *  Retry configurations for items to be executed, indexed by task address.
+     */
+    get asV1003000(): SchedulerRetriesStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Retry configurations for items to be executed, indexed by task address.
+ */
+export interface SchedulerRetriesStorageV1003000 {
+    get(key: [number, number]): Promise<(v1003000.RetryConfig | undefined)>
+    getAll(): Promise<v1003000.RetryConfig[]>
+    getMany(keys: [number, number][]): Promise<(v1003000.RetryConfig | undefined)[]>
+    getKeys(): Promise<[number, number][]>
+    getKeys(key: [number, number]): Promise<[number, number][]>
+    getKeysPaged(pageSize: number): AsyncIterable<[number, number][]>
+    getKeysPaged(pageSize: number, key: [number, number]): AsyncIterable<[number, number][]>
+    getPairs(): Promise<[k: [number, number], v: v1003000.RetryConfig][]>
+    getPairs(key: [number, number]): Promise<[k: [number, number], v: v1003000.RetryConfig][]>
+    getPairsPaged(pageSize: number): AsyncIterable<[k: [number, number], v: v1003000.RetryConfig][]>
+    getPairsPaged(pageSize: number, key: [number, number]): AsyncIterable<[k: [number, number], v: v1003000.RetryConfig][]>
+}
+
 export class SchedulerStorageVersionStorage extends StorageBase {
     protected getPrefix() {
         return 'Scheduler'
@@ -19348,6 +19952,38 @@ export interface StakingCounterForValidatorsStorageV9050 {
     get(): Promise<number>
 }
 
+export class StakingCounterForVirtualStakersStorage extends StorageBase {
+    protected getPrefix() {
+        return 'Staking'
+    }
+
+    protected getName() {
+        return 'CounterForVirtualStakers'
+    }
+
+    /**
+     * Counter for the related counted storage map
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '81bbbe8e62451cbcc227306706c919527aa2538970bd6d67a9969dd52c257d02'
+    }
+
+    /**
+     * Counter for the related counted storage map
+     */
+    get asV1003000(): StakingCounterForVirtualStakersStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ * Counter for the related counted storage map
+ */
+export interface StakingCounterForVirtualStakersStorageV1003000 {
+    get(): Promise<number>
+}
+
 export class StakingCurrentEraStorage extends StorageBase {
     protected getPrefix() {
         return 'Staking'
@@ -19425,6 +20061,56 @@ export class StakingCurrentPlannedSessionStorage extends StorageBase {
  */
 export interface StakingCurrentPlannedSessionStorageV29 {
     get(): Promise<number>
+}
+
+export class StakingDisabledValidatorsStorage extends StorageBase {
+    protected getPrefix() {
+        return 'Staking'
+    }
+
+    protected getName() {
+        return 'DisabledValidators'
+    }
+
+    /**
+     *  Indices of validators that have offended in the active era. The offenders are disabled for a
+     *  whole era. For this reason they are kept here - only staking pallet knows about eras. The
+     *  implementor of [`DisablingStrategy`] defines if a validator should be disabled which
+     *  implicitly means that the implementor also controls the max number of disabled validators.
+     * 
+     *  The vec is always kept sorted so that we can find whether a given validator has previously
+     *  offended using binary search.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === 'a9f6979e68cec9d5834e7d077129aa05e8b477f326cb009049d2178afbea14f0'
+    }
+
+    /**
+     *  Indices of validators that have offended in the active era. The offenders are disabled for a
+     *  whole era. For this reason they are kept here - only staking pallet knows about eras. The
+     *  implementor of [`DisablingStrategy`] defines if a validator should be disabled which
+     *  implicitly means that the implementor also controls the max number of disabled validators.
+     * 
+     *  The vec is always kept sorted so that we can find whether a given validator has previously
+     *  offended using binary search.
+     */
+    get asV1003000(): StakingDisabledValidatorsStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Indices of validators that have offended in the active era. The offenders are disabled for a
+ *  whole era. For this reason they are kept here - only staking pallet knows about eras. The
+ *  implementor of [`DisablingStrategy`] defines if a validator should be disabled which
+ *  implicitly means that the implementor also controls the max number of disabled validators.
+ * 
+ *  The vec is always kept sorted so that we can find whether a given validator has previously
+ *  offended using binary search.
+ */
+export interface StakingDisabledValidatorsStorageV1003000 {
+    get(): Promise<number[]>
 }
 
 export class StakingEarliestUnappliedSlashStorage extends StorageBase {
@@ -20334,6 +21020,44 @@ export class StakingMaxNominatorsCountStorage extends StorageBase {
  *  When this value is not set, no limits are enforced.
  */
 export interface StakingMaxNominatorsCountStorageV9050 {
+    get(): Promise<(number | undefined)>
+}
+
+export class StakingMaxStakedRewardsStorage extends StorageBase {
+    protected getPrefix() {
+        return 'Staking'
+    }
+
+    protected getName() {
+        return 'MaxStakedRewards'
+    }
+
+    /**
+     *  Maximum staked rewards, i.e. the percentage of the era inflation that
+     *  is used for stake rewards.
+     *  See [Era payout](./index.html#era-payout).
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === 'a05bf6dd806233a6b9a22cb1cd50bcf79bcb6a1f3014c295988bec299abc5cd3'
+    }
+
+    /**
+     *  Maximum staked rewards, i.e. the percentage of the era inflation that
+     *  is used for stake rewards.
+     *  See [Era payout](./index.html#era-payout).
+     */
+    get asV1003000(): StakingMaxStakedRewardsStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Maximum staked rewards, i.e. the percentage of the era inflation that
+ *  is used for stake rewards.
+ *  See [Era payout](./index.html#era-payout).
+ */
+export interface StakingMaxStakedRewardsStorageV1003000 {
     get(): Promise<(number | undefined)>
 }
 
@@ -21422,6 +22146,63 @@ export interface StakingValidatorsStorageV28 {
     getPairs(key: Uint8Array): Promise<[k: Uint8Array, v: v28.ValidatorPrefs][]>
     getPairsPaged(pageSize: number): AsyncIterable<[k: Uint8Array, v: v28.ValidatorPrefs][]>
     getPairsPaged(pageSize: number, key: Uint8Array): AsyncIterable<[k: Uint8Array, v: v28.ValidatorPrefs][]>
+}
+
+export class StakingVirtualStakersStorage extends StorageBase {
+    protected getPrefix() {
+        return 'Staking'
+    }
+
+    protected getName() {
+        return 'VirtualStakers'
+    }
+
+    /**
+     *  Stakers whose funds are managed by other pallets.
+     * 
+     *  This pallet does not apply any locks on them, therefore they are only virtually bonded. They
+     *  are expected to be keyless accounts and hence should not be allowed to mutate their ledger
+     *  directly via this pallet. Instead, these accounts are managed by other pallets and accessed
+     *  via low level apis. We keep track of them to do minimal integrity checks.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '29735300dba5135be0e1e53d771089aba86ed92479018d68d31c9d66cb9816e3'
+    }
+
+    /**
+     *  Stakers whose funds are managed by other pallets.
+     * 
+     *  This pallet does not apply any locks on them, therefore they are only virtually bonded. They
+     *  are expected to be keyless accounts and hence should not be allowed to mutate their ledger
+     *  directly via this pallet. Instead, these accounts are managed by other pallets and accessed
+     *  via low level apis. We keep track of them to do minimal integrity checks.
+     */
+    get asV1003000(): StakingVirtualStakersStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Stakers whose funds are managed by other pallets.
+ * 
+ *  This pallet does not apply any locks on them, therefore they are only virtually bonded. They
+ *  are expected to be keyless accounts and hence should not be allowed to mutate their ledger
+ *  directly via this pallet. Instead, these accounts are managed by other pallets and accessed
+ *  via low level apis. We keep track of them to do minimal integrity checks.
+ */
+export interface StakingVirtualStakersStorageV1003000 {
+    get(key: Uint8Array): Promise<(null | undefined)>
+    getAll(): Promise<null[]>
+    getMany(keys: Uint8Array[]): Promise<(null | undefined)[]>
+    getKeys(): Promise<Uint8Array[]>
+    getKeys(key: Uint8Array): Promise<Uint8Array[]>
+    getKeysPaged(pageSize: number): AsyncIterable<Uint8Array[]>
+    getKeysPaged(pageSize: number, key: Uint8Array): AsyncIterable<Uint8Array[]>
+    getPairs(): Promise<[k: Uint8Array, v: null][]>
+    getPairs(key: Uint8Array): Promise<[k: Uint8Array, v: null][]>
+    getPairsPaged(pageSize: number): AsyncIterable<[k: Uint8Array, v: null][]>
+    getPairsPaged(pageSize: number, key: Uint8Array): AsyncIterable<[k: Uint8Array, v: null][]>
 }
 
 export class StateTrieMigrationAutoLimitsStorage extends StorageBase {
@@ -23002,6 +23783,87 @@ export class SystemEventsStorage extends StorageBase {
         assert(this.isV1002000)
         return this as any
     }
+
+    /**
+     *  Events deposited for the current block.
+     * 
+     *  NOTE: The item is unbound and should therefore never be read on chain.
+     *  It could otherwise inflate the PoV size of a block.
+     * 
+     *  Events have a large in-memory size. Box the events to not go out-of-memory
+     *  just in case someone still reads them from within the runtime.
+     */
+    get isV1002006(): boolean {
+        return this.getTypeHash() === 'fb1a88b94f5557853258d75f9c7a5e0b07f29ce436ea6837e337e7500f1c6ace'
+    }
+
+    /**
+     *  Events deposited for the current block.
+     * 
+     *  NOTE: The item is unbound and should therefore never be read on chain.
+     *  It could otherwise inflate the PoV size of a block.
+     * 
+     *  Events have a large in-memory size. Box the events to not go out-of-memory
+     *  just in case someone still reads them from within the runtime.
+     */
+    get asV1002006(): SystemEventsStorageV1002006 {
+        assert(this.isV1002006)
+        return this as any
+    }
+
+    /**
+     *  Events deposited for the current block.
+     * 
+     *  NOTE: The item is unbound and should therefore never be read on chain.
+     *  It could otherwise inflate the PoV size of a block.
+     * 
+     *  Events have a large in-memory size. Box the events to not go out-of-memory
+     *  just in case someone still reads them from within the runtime.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '2f2e340a15a0985833aa89a4ed43868e37338c4e262c0b4e0d864629690b439c'
+    }
+
+    /**
+     *  Events deposited for the current block.
+     * 
+     *  NOTE: The item is unbound and should therefore never be read on chain.
+     *  It could otherwise inflate the PoV size of a block.
+     * 
+     *  Events have a large in-memory size. Box the events to not go out-of-memory
+     *  just in case someone still reads them from within the runtime.
+     */
+    get asV1003000(): SystemEventsStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+
+    /**
+     *  Events deposited for the current block.
+     * 
+     *  NOTE: The item is unbound and should therefore never be read on chain.
+     *  It could otherwise inflate the PoV size of a block.
+     * 
+     *  Events have a large in-memory size. Box the events to not go out-of-memory
+     *  just in case someone still reads them from within the runtime.
+     */
+    get isV1003003(): boolean {
+        return this.getTypeHash() === 'd6eef37c3b27ecfe56b370dc7f4e5b267ff31b753cee7be96b145bf8c16e720d'
+    }
+
+    /**
+     *  Events deposited for the current block.
+     * 
+     *  NOTE: The item is unbound and should therefore never be read on chain.
+     *  It could otherwise inflate the PoV size of a block.
+     * 
+     *  Events have a large in-memory size. Box the events to not go out-of-memory
+     *  just in case someone still reads them from within the runtime.
+     */
+    get asV1003003(): SystemEventsStorageV1003003 {
+        assert(this.isV1003003)
+        return this as any
+    }
 }
 
 /**
@@ -23418,6 +24280,45 @@ export interface SystemEventsStorageV1002000 {
     get(): Promise<v1002000.EventRecord[]>
 }
 
+/**
+ *  Events deposited for the current block.
+ * 
+ *  NOTE: The item is unbound and should therefore never be read on chain.
+ *  It could otherwise inflate the PoV size of a block.
+ * 
+ *  Events have a large in-memory size. Box the events to not go out-of-memory
+ *  just in case someone still reads them from within the runtime.
+ */
+export interface SystemEventsStorageV1002006 {
+    get(): Promise<v1002006.EventRecord[]>
+}
+
+/**
+ *  Events deposited for the current block.
+ * 
+ *  NOTE: The item is unbound and should therefore never be read on chain.
+ *  It could otherwise inflate the PoV size of a block.
+ * 
+ *  Events have a large in-memory size. Box the events to not go out-of-memory
+ *  just in case someone still reads them from within the runtime.
+ */
+export interface SystemEventsStorageV1003000 {
+    get(): Promise<v1003000.EventRecord[]>
+}
+
+/**
+ *  Events deposited for the current block.
+ * 
+ *  NOTE: The item is unbound and should therefore never be read on chain.
+ *  It could otherwise inflate the PoV size of a block.
+ * 
+ *  Events have a large in-memory size. Box the events to not go out-of-memory
+ *  just in case someone still reads them from within the runtime.
+ */
+export interface SystemEventsStorageV1003003 {
+    get(): Promise<v1003003.EventRecord[]>
+}
+
 export class SystemExecutionPhaseStorage extends StorageBase {
     protected getPrefix() {
         return 'System'
@@ -23554,6 +24455,38 @@ export class SystemExtrinsicsRootStorage extends StorageBase {
  */
 export interface SystemExtrinsicsRootStorageV0 {
     get(): Promise<Uint8Array>
+}
+
+export class SystemInherentsAppliedStorage extends StorageBase {
+    protected getPrefix() {
+        return 'System'
+    }
+
+    protected getName() {
+        return 'InherentsApplied'
+    }
+
+    /**
+     *  Whether all inherents have been applied.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '1b6fbf1674d189f761a7ac63093bf5c755bf073dd9d9f0dbe657289f92575db5'
+    }
+
+    /**
+     *  Whether all inherents have been applied.
+     */
+    get asV1003000(): SystemInherentsAppliedStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Whether all inherents have been applied.
+ */
+export interface SystemInherentsAppliedStorageV1003000 {
+    get(): Promise<boolean>
 }
 
 export class SystemLastRuntimeUpgradeStorage extends StorageBase {
@@ -26304,6 +27237,53 @@ export interface XcmPalletQueryCounterStorageV9140 {
     get(): Promise<bigint>
 }
 
+export class XcmPalletRecordedXcmStorage extends StorageBase {
+    protected getPrefix() {
+        return 'XcmPallet'
+    }
+
+    protected getName() {
+        return 'RecordedXcm'
+    }
+
+    /**
+     *  If [`ShouldRecordXcm`] is set to true, then the last XCM program executed locally
+     *  will be stored here.
+     *  Runtime APIs can fetch the XCM that was executed by accessing this value.
+     * 
+     *  Only relevant if this pallet is being used as the [`xcm_executor::traits::RecordXcm`]
+     *  implementation in the XCM executor configuration.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '8043b6a22ad1ef6bcf3c81406428f164936c87aa13da6e0093255ea8ff8da85f'
+    }
+
+    /**
+     *  If [`ShouldRecordXcm`] is set to true, then the last XCM program executed locally
+     *  will be stored here.
+     *  Runtime APIs can fetch the XCM that was executed by accessing this value.
+     * 
+     *  Only relevant if this pallet is being used as the [`xcm_executor::traits::RecordXcm`]
+     *  implementation in the XCM executor configuration.
+     */
+    get asV1003000(): XcmPalletRecordedXcmStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  If [`ShouldRecordXcm`] is set to true, then the last XCM program executed locally
+ *  will be stored here.
+ *  Runtime APIs can fetch the XCM that was executed by accessing this value.
+ * 
+ *  Only relevant if this pallet is being used as the [`xcm_executor::traits::RecordXcm`]
+ *  implementation in the XCM executor configuration.
+ */
+export interface XcmPalletRecordedXcmStorageV1003000 {
+    get(): Promise<(v1003000.V4Instruction[] | undefined)>
+}
+
 export class XcmPalletRemoteLockedFungiblesStorage extends StorageBase {
     protected getPrefix() {
         return 'XcmPallet'
@@ -26467,6 +27447,56 @@ export class XcmPalletSafeXcmVersionStorage extends StorageBase {
  */
 export interface XcmPalletSafeXcmVersionStorageV9140 {
     get(): Promise<(number | undefined)>
+}
+
+export class XcmPalletShouldRecordXcmStorage extends StorageBase {
+    protected getPrefix() {
+        return 'XcmPallet'
+    }
+
+    protected getName() {
+        return 'ShouldRecordXcm'
+    }
+
+    /**
+     *  Whether or not incoming XCMs (both executed locally and received) should be recorded.
+     *  Only one XCM program will be recorded at a time.
+     *  This is meant to be used in runtime APIs, and it's advised it stays false
+     *  for all other use cases, so as to not degrade regular performance.
+     * 
+     *  Only relevant if this pallet is being used as the [`xcm_executor::traits::RecordXcm`]
+     *  implementation in the XCM executor configuration.
+     */
+    get isV1003000(): boolean {
+        return this.getTypeHash() === '1b6fbf1674d189f761a7ac63093bf5c755bf073dd9d9f0dbe657289f92575db5'
+    }
+
+    /**
+     *  Whether or not incoming XCMs (both executed locally and received) should be recorded.
+     *  Only one XCM program will be recorded at a time.
+     *  This is meant to be used in runtime APIs, and it's advised it stays false
+     *  for all other use cases, so as to not degrade regular performance.
+     * 
+     *  Only relevant if this pallet is being used as the [`xcm_executor::traits::RecordXcm`]
+     *  implementation in the XCM executor configuration.
+     */
+    get asV1003000(): XcmPalletShouldRecordXcmStorageV1003000 {
+        assert(this.isV1003000)
+        return this as any
+    }
+}
+
+/**
+ *  Whether or not incoming XCMs (both executed locally and received) should be recorded.
+ *  Only one XCM program will be recorded at a time.
+ *  This is meant to be used in runtime APIs, and it's advised it stays false
+ *  for all other use cases, so as to not degrade regular performance.
+ * 
+ *  Only relevant if this pallet is being used as the [`xcm_executor::traits::RecordXcm`]
+ *  implementation in the XCM executor configuration.
+ */
+export interface XcmPalletShouldRecordXcmStorageV1003000 {
+    get(): Promise<boolean>
 }
 
 export class XcmPalletSupportedVersionStorage extends StorageBase {

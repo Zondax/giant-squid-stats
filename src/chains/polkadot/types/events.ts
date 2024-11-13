@@ -25,6 +25,8 @@ import * as v9430 from './v9430'
 import * as v1000001 from './v1000001'
 import * as v1001002 from './v1001002'
 import * as v1002000 from './v1002000'
+import * as v1003000 from './v1003000'
+import * as v1003003 from './v1003003'
 
 export class AssetRateAssetRateCreatedEvent {
     private readonly _chain: Chain
@@ -1930,6 +1932,64 @@ export class ConvictionVotingUndelegatedEvent {
      */
     get asV9420(): Uint8Array {
         assert(this.isV9420)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
+export class CoretimeCoreAssignedEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'Coretime.CoreAssigned')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * A core has received a new assignment from the broker chain.
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('Coretime.CoreAssigned') === '9efdd4905ddb3554f439f7126c49aed8b5c2026738b7a71cddf489ef03bf3731'
+    }
+
+    /**
+     * A core has received a new assignment from the broker chain.
+     */
+    get asV1003000(): {core: number} {
+        assert(this.isV1003000)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
+export class CoretimeRevenueInfoRequestedEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'Coretime.RevenueInfoRequested')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * The broker chain has asked for revenue information for a specific block.
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('Coretime.RevenueInfoRequested') === '9be35e7de5ea0123010dc6d955ee698a79910d328a220172ab82a67dd10dc4b5'
+    }
+
+    /**
+     * The broker chain has asked for revenue information for a specific block.
+     */
+    get asV1003000(): {when: number} {
+        assert(this.isV1003000)
         return this._chain.decodeEvent(this.event)
     }
 }
@@ -6128,6 +6188,66 @@ export class IdentityUsernameSetEvent {
     }
 }
 
+export class IdentityMigratorDepositUpdatedEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'IdentityMigrator.DepositUpdated')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * The deposits held for `who` were updated. `identity` is the new deposit held for
+     * identity info, and `subs` is the new deposit held for the sub-accounts.
+     */
+    get isV1002006(): boolean {
+        return this._chain.getEventHash('IdentityMigrator.DepositUpdated') === '9f9569b16e96ae9e2a645d90742fba4da56c69e27ca057c394f65de20a57acab'
+    }
+
+    /**
+     * The deposits held for `who` were updated. `identity` is the new deposit held for
+     * identity info, and `subs` is the new deposit held for the sub-accounts.
+     */
+    get asV1002006(): {who: Uint8Array, identity: bigint, subs: bigint} {
+        assert(this.isV1002006)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
+export class IdentityMigratorIdentityReapedEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'IdentityMigrator.IdentityReaped')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * The identity and all sub accounts were reaped for `who`.
+     */
+    get isV1002006(): boolean {
+        return this._chain.getEventHash('IdentityMigrator.IdentityReaped') === 'b8a0d2208835f6ada60dd21cd93533d703777b3779109a7c6a2f26bad68c2f3b'
+    }
+
+    /**
+     * The identity and all sub accounts were reaped for `who`.
+     */
+    get asV1002006(): {who: Uint8Array} {
+        assert(this.isV1002006)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
 export class ImOnlineAllGoodEvent {
     private readonly _chain: Chain
     private readonly event: Event
@@ -6489,6 +6609,21 @@ export class MessageQueueProcessingFailedEvent {
      */
     get asV9430(): {id: Uint8Array, origin: v9430.AggregateMessageOrigin, error: v9430.ProcessMessageError} {
         assert(this.isV9430)
+        return this._chain.decodeEvent(this.event)
+    }
+
+    /**
+     * Message discarded due to an error in the `MessageProcessor` (usually a format error).
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('MessageQueue.ProcessingFailed') === '5f61e9a88f359f9e66966c946746c1d513e9f6f80a4089c09a9ad44e6228118c'
+    }
+
+    /**
+     * Message discarded due to an error in the `MessageProcessor` (usually a format error).
+     */
+    get asV1003000(): {id: Uint8Array, origin: v1003000.AggregateMessageOrigin, error: v1003000.ProcessMessageError} {
+        assert(this.isV1003000)
         return this._chain.decodeEvent(this.event)
     }
 }
@@ -7442,6 +7577,64 @@ export class OffencesOffenceEvent {
     }
 }
 
+export class OnDemandOnDemandOrderPlacedEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'OnDemand.OnDemandOrderPlaced')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * An order was placed at some spot price amount by orderer ordered_by
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('OnDemand.OnDemandOrderPlaced') === '616aac403938e34332d2385eda632239e640a7873c5e111a843bb784c0a2766d'
+    }
+
+    /**
+     * An order was placed at some spot price amount by orderer ordered_by
+     */
+    get asV1003000(): {paraId: number, spotPrice: bigint, orderedBy: Uint8Array} {
+        assert(this.isV1003000)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
+export class OnDemandSpotPriceSetEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'OnDemand.SpotPriceSet')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * The value of the spot price has likely changed
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('OnDemand.SpotPriceSet') === 'e5b19246e361d9e4a1b39e8100a3e65c21a449c337a909c3183077d77bf06cd1'
+    }
+
+    /**
+     * The value of the spot price has likely changed
+     */
+    get asV1003000(): {spotPrice: bigint} {
+        assert(this.isV1003000)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
 export class ParaInclusionCandidateBackedEvent {
     private readonly _chain: Chain
     private readonly event: Event
@@ -7554,6 +7747,39 @@ export class ParaInclusionUpwardMessagesReceivedEvent {
      */
     get asV9430(): {from: number, count: number} {
         assert(this.isV9430)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
+export class ParametersUpdatedEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'Parameters.Updated')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * A Parameter was set.
+     * 
+     * Is also emitted when the value was not changed.
+     */
+    get isV1003003(): boolean {
+        return this._chain.getEventHash('Parameters.Updated') === '69c9ab7c7584bca9ccfd617a101bf316a663a08c172aab68b502b0132e2cae02'
+    }
+
+    /**
+     * A Parameter was set.
+     * 
+     * Is also emitted when the value was not changed.
+     */
+    get asV1003003(): {key: v1003003.RuntimeParametersKey, oldValue: (v1003003.RuntimeParametersValue | undefined), newValue: (v1003003.RuntimeParametersValue | undefined)} {
+        assert(this.isV1003003)
         return this._chain.decodeEvent(this.event)
     }
 }
@@ -8512,6 +8738,21 @@ export class ProxyProxyAddedEvent {
         assert(this.isV9420)
         return this._chain.decodeEvent(this.event)
     }
+
+    /**
+     * A proxy was added.
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('Proxy.ProxyAdded') === '3f030b28bfe7ce88bd3e6ca38ceb8a23f756400deecc782988a002bd45114146'
+    }
+
+    /**
+     * A proxy was added.
+     */
+    get asV1003000(): {delegator: Uint8Array, delegatee: Uint8Array, proxyType: v1003000.ProxyType, delay: number} {
+        assert(this.isV1003000)
+        return this._chain.decodeEvent(this.event)
+    }
 }
 
 export class ProxyProxyExecutedEvent {
@@ -8690,6 +8931,21 @@ export class ProxyProxyRemovedEvent {
         assert(this.isV9420)
         return this._chain.decodeEvent(this.event)
     }
+
+    /**
+     * A proxy was removed.
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('Proxy.ProxyRemoved') === '3f030b28bfe7ce88bd3e6ca38ceb8a23f756400deecc782988a002bd45114146'
+    }
+
+    /**
+     * A proxy was removed.
+     */
+    get asV1003000(): {delegator: Uint8Array, delegatee: Uint8Array, proxyType: v1003000.ProxyType, delay: number} {
+        assert(this.isV1003000)
+        return this._chain.decodeEvent(this.event)
+    }
 }
 
 export class ProxyPureCreatedEvent {
@@ -8736,6 +8992,23 @@ export class ProxyPureCreatedEvent {
      */
     get asV9420(): {pure: Uint8Array, who: Uint8Array, proxyType: v9420.ProxyType, disambiguationIndex: number} {
         assert(this.isV9420)
+        return this._chain.decodeEvent(this.event)
+    }
+
+    /**
+     * A pure account has been created by new proxy with given
+     * disambiguation index and proxy type.
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('Proxy.PureCreated') === '3f5fd92e374155882ecd2cf2e2cbec470dff142c3ac63ca298285bb9d2bc483e'
+    }
+
+    /**
+     * A pure account has been created by new proxy with given
+     * disambiguation index and proxy type.
+     */
+    get asV1003000(): {pure: Uint8Array, who: Uint8Array, proxyType: v1003000.ProxyType, disambiguationIndex: number} {
+        assert(this.isV1003000)
         return this._chain.decodeEvent(this.event)
     }
 }
@@ -9835,6 +10108,95 @@ export class SchedulerPermanentlyOverweightEvent {
      */
     get asV9340(): {task: [number, number], id: (Uint8Array | undefined)} {
         assert(this.isV9340)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
+export class SchedulerRetryCancelledEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'Scheduler.RetryCancelled')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * Cancel a retry configuration for some task.
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('Scheduler.RetryCancelled') === '3f8a02e4aab86c69eee850370e5a22ba709a5a92af04e5636b8cbc2a1920b477'
+    }
+
+    /**
+     * Cancel a retry configuration for some task.
+     */
+    get asV1003000(): {task: [number, number], id: (Uint8Array | undefined)} {
+        assert(this.isV1003000)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
+export class SchedulerRetryFailedEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'Scheduler.RetryFailed')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * The given task was unable to be retried since the agenda is full at that block or there
+     * was not enough weight to reschedule it.
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('Scheduler.RetryFailed') === '3f8a02e4aab86c69eee850370e5a22ba709a5a92af04e5636b8cbc2a1920b477'
+    }
+
+    /**
+     * The given task was unable to be retried since the agenda is full at that block or there
+     * was not enough weight to reschedule it.
+     */
+    get asV1003000(): {task: [number, number], id: (Uint8Array | undefined)} {
+        assert(this.isV1003000)
+        return this._chain.decodeEvent(this.event)
+    }
+}
+
+export class SchedulerRetrySetEvent {
+    private readonly _chain: Chain
+    private readonly event: Event
+
+    constructor(ctx: EventContext)
+    constructor(ctx: ChainContext, event: Event)
+    constructor(ctx: EventContext, event?: Event) {
+        event = event || ctx.event
+        assert(event.name === 'Scheduler.RetrySet')
+        this._chain = ctx._chain
+        this.event = event
+    }
+
+    /**
+     * Set a retry configuration for some task.
+     */
+    get isV1003000(): boolean {
+        return this._chain.getEventHash('Scheduler.RetrySet') === 'ea8aa0ed09111198d24aab62e7705fc5054118cd7b2c302ff3b68962c5229357'
+    }
+
+    /**
+     * Set a retry configuration for some task.
+     */
+    get asV1003000(): {task: [number, number], id: (Uint8Array | undefined), period: number, retries: number} {
+        assert(this.isV1003000)
         return this._chain.decodeEvent(this.event)
     }
 }
